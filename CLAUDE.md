@@ -39,3 +39,12 @@ uv run main.py
 - **OpenAI**: Galileo auto-instruments via `galileo_context.init()` — no manual span logging needed.
 - **Anthropic**: Requires manual span logging with `logger.start_trace()`, `logger.add_llm_span()`, `logger.conclude()`, and `logger.flush()`.
 - All traces are viewable in the Galileo console at the project/log-stream URLs printed after execution.
+
+### explain the metrics meaning and how they are calculated, which use-case will be good for this metrics.
+
+## agent-control
+ - add doc source
+ - extract features
+ - buld agent to demo it
+
+
