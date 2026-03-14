@@ -107,6 +107,24 @@
 
 ---
 
+### Scenario 7: Human Annotation and Review Workflow
+**Story:** A QA or operations team wants human reviewers to score real traces, tag quality issues, and leave notes that can later be exported or used to build better evaluation datasets.
+
+| Step | What the user does | Features covered |
+|------|--------------------|-----------------|
+| 1 | Bootstrap Galileo context and create a log stream for reviewed records | 1.1.1, 1.1.2 |
+| 2 | Log traces that need human review | 1.2.1 (manual logging), 1.1.4 (traces), 1.1.5 (LLM spans) |
+| 3 | Create numeric review templates | 9.2 (score annotation), 9.3 (star annotation) |
+| 4 | Create categorical and freeform review templates | 9.1 (categories/tags), 9.4 (text annotation) |
+| 5 | Add quick approval feedback | 9.5 (thumbs up/down annotation) |
+| 6 | Submit annotations against trace records | 9.1, 9.2, 9.3, 9.4, 9.5 |
+| 7 | View annotation forms in Logs and Messages | 9.x annotations in console workflow |
+| 8 | Export annotations as analysis columns | 9.7 (export annotations as columns) |
+| 9 | Optional: route records through annotation queues | 9.6 (Annotation Queues, Enterprise Beta) |
+| **Total** | | **~10 features** |
+
+---
+
 ## Summary
 
 | Scenario | Features | Makes real LLM calls? |
@@ -117,4 +135,5 @@
 | 4. Prompt Engineering | ~15 | Yes (via experiment) |
 | 5. Production Guardrails | ~12 | No (invoke_protect) |
 | 6. Custom Evaluation | ~12 | No (manual spans) |
-| **Total unique** | **~85** | |
+| 7. Human Annotation | ~10 | No (manual traces + annotation API) |
+| **Total unique** | **~92** | |
