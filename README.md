@@ -1,72 +1,97 @@
-# Galileo Scenario Agents
+# Galileo SDK Learning Lab
 
-This repo contains Galileo scenario agents in Python under `agents/` and matching runnable notebooks under `agents/*.ipynb`.
+An exploratory, educational project for learning the [Galileo](https://galileo.ai) AI observability platform through hands-on Jupyter notebooks.
+
+## What This Repo Does
+
+Each notebook in `agents/` is a self-contained scenario that teaches one area of the Galileo platform — from basic chatbot monitoring to production guardrails to human annotation workflows. Run the cells in order, read the explanations, and inspect the results in the Galileo Console.
 
 ## Prerequisites
 
-- `uv` installed
-- Python 3.13 available to `uv`
-- Required Galileo and OpenAI credentials saved in `.env`
+- **Python 3.13** available on your system
+- **[uv](https://docs.astral.sh/uv/)** installed for dependency and environment management
+- A **Galileo account** — sign up at [galileo.ai](https://galileo.ai)
+- An **OpenAI API key** — get one from [platform.openai.com/api-keys](https://platform.openai.com/api-keys)
 
-## Set Up The Environment With `uv`
-
-From the repo root:
+## Setup
 
 ```bash
+# 1. Clone the repo and cd into it
+git clone <repo-url> && cd galileo-test
+
+# 2. Install dependencies and create .venv
 uv sync
+
+# 3. Copy the env template and fill in your API keys
+cp .env.example .env
 ```
 
-This creates `.venv/` and installs all project dependencies, including `ipykernel` for notebooks.
+Your `.env` file needs:
 
-If you want to activate the environment in your shell:
+```
+GALILEO_API_KEY=your-galileo-key-here
+OPENAI_API_KEY=your-openai-key-here
+```
+
+## Running the Notebooks
+
+Open any notebook in **Jupyter** or **VS Code** and select the `.venv/bin/python` interpreter as the kernel (installed via `ipykernel` in `uv sync`).
 
 ```bash
+# Or activate the environment in your shell
 source .venv/bin/activate
 ```
 
-You can also run commands without activating it:
+### Notebook Scenarios
 
-```bash
-uv run python main.py list
-uv run python evaluator.py --list
-```
-
-## Use The Notebooks
-
-The generated notebooks are:
-
-- `agents/chatbot.ipynb`
-- `agents/rag.ipynb`
-- `agents/tools.ipynb`
-- `agents/experiments.ipynb`
-- `agents/guardrails.ipynb`
-- `agents/custom_eval.ipynb`
+| # | Notebook | What You'll Learn | Makes LLM Calls? |
+|---|----------|-------------------|-------------------|
+| 1 | `agents/1_chatbot.ipynb` | Auto-instrumentation, streaming, sessions, quality & safety metrics | Yes (OpenAI) |
+| 2 | `agents/2_rag.ipynb` | Retriever + LLM spans, RAG metrics, datasets, prompt experiments | Yes (via experiment) |
+| 3 | `agents/3_tools.ipynb` | Agent/tool/workflow spans, @log decorator, agentic metrics | No (manual spans) |
+| 4 | `agents/4_experiments.ipynb` | Datasets, prompt templates, experiment runs, BLEU/ROUGE/tone, confidence | Yes (via experiment) |
+| 5 | `agents/5_guardrails.ipynb` | Protect stages, rulesets, toxicity/PII/injection detection | No (invoke_protect) |
+| 6 | `agents/6_custom_eval.ipynb` | Custom Python metrics, safety metrics, available scorers, distributed tracing | No (manual spans) |
+| 7 | `agents/7_annotations.ipynb` | Annotation templates, human ratings, review workflows | No (manual traces + API) |
 
 Each notebook:
+- Loads credentials from `.env`
+- Creates a Galileo project and log stream
+- Walks through the scenario step by step with detailed explanations
+- Includes a final cleanup cell to delete the demo project
 
-- loads credentials from `.env`
-- instantiates one agent
-- exposes the scenario steps as separate cells
-- includes a final cleanup cell
+**Run cells in order.** Notebooks create Galileo projects/log streams and may make live API calls.
 
-Open a notebook in Jupyter or VS Code and select the interpreter from:
+## Documentation
 
-```text
-.venv/bin/python
-```
+| File | Contents |
+|------|----------|
+| `docs/terminology.md` | Core Galileo concepts — spans, traces, metrics, experiments, guardrails, etc. |
+| `docs/scenarios.md` | Scenario-based test plan with feature coverage matrix |
+| `docs/galileo-features.md` | Full Galileo platform feature checklist (148 features) |
 
-If your notebook client asks for a kernel, use the environment created by `uv sync`. The project includes `ipykernel`, so the `.venv` interpreter is notebook-ready.
-
-## Regenerate The Notebooks
-
-If you update any agent in `agents/*.py`, regenerate the companion notebooks with:
+## Running Scripts
 
 ```bash
-python scripts/generate_agent_notebooks.py
+uv run main.py
 ```
 
-## Notes
+## Project Structure
 
-- Run notebook cells in order.
-- The notebooks will create Galileo projects/log streams and may make live API calls.
-- Use the final cleanup cell when you are done with a scenario.
+```
+├── agents/              # Jupyter notebooks (one per scenario)
+│   ├── 1_chatbot.ipynb
+│   ├── 2_rag.ipynb
+│   ├── 3_tools.ipynb
+│   ├── 4_experiments.ipynb
+│   ├── 5_guardrails.ipynb
+│   ├── 6_custom_eval.ipynb
+│   └── 7_annotations.ipynb
+├── docs/                # Reference documentation
+│   ├── terminology.md
+│   ├── scenarios.md
+│   └── galileo-features.md
+├── .env.example         # Template for API keys
+├── pyproject.toml       # Python dependencies
+└── uv.lock              # Locked dependency versions
+```
