@@ -390,41 +390,69 @@ Are you using OpenAI?
 
 ### What is Agent Control?
 
-Agent Control is not a single Galileo feature — it's the combination of three capabilities applied to AI agents:
+Agent Control is a standalone, open-source **runtime guardrails platform** for AI agents. It provides a server, Python/TypeScript SDKs, and a web dashboard for configuring safety controls on agent inputs and outputs — without modifying agent code.
 
-1. **Observe** — Capture every agent decision, tool call, and LLM interaction as structured spans
-2. **Evaluate** — Score agent behavior with 9 purpose-built agentic metrics
-3. **Protect** — Apply runtime guardrails using agentic metric rules
+**Repo:** https://github.com/agentcontrol/agent-control
 
-### Agent-Specific Span Patterns
+### The Core Formula
 
-The typical span hierarchy for an agent:
+Every control follows this structure:
 
 ```
-Session: "user-conversation-42"
- └── Trace: "Plan a trip to Tokyo"
-      └── Agent Span: "TravelPlannerAgent" (decision-making)
-           ├── Tool Span: search_flights() (action)
-           ├── Tool Span: search_hotels() (action)
-           └── LLM Span: "Summarize options" (generation)
+Control = Scope + Selector + Evaluator + Action
 ```
 
-### Agent Framework Integrations
+- **Scope**: When should this control fire? (pre/post execution, which step types, which step names)
+- **Selector**: What data should be checked? (input, output, a nested field like `input.query`)
+- **Evaluator**: How should it be checked? (regex pattern, value list, JSON schema, SQL rules, AI model)
+- **Action**: What happens if it matches? (deny, steer, warn, log, allow)
 
-| Framework | Integration Method | Auto-captures |
-|-----------|-------------------|---------------|
-| OpenAI Agents SDK | GalileoTracingProcessor | Agent events, tool calls, handoffs |
-| LangChain/LangGraph | GalileoCallback | Full agent graph, multi-agent routing |
-| Strands Agents | OpenTelemetry (GalileoSpanProcessor) | Built-in telemetry |
-| Microsoft Agent Framework | OpenTelemetry (GalileoSpanProcessor) | LLM I/O with sensitive data option |
-| MCP Servers | Manual logger.add_tool_span() | Tool call inputs/outputs |
+### Built-in Evaluators
 
-### Agent Reliability Patterns
+| Evaluator | What It Does | Example Use Case |
+|-----------|-------------|-----------------|
+| **Regex** | Pattern matching (Google RE2, ReDoS-safe) | Detect SSNs, credit cards, API keys in outputs |
+| **List** | Value matching (exact or contains, any or all) | Block banned terms, enforce allowlists |
+| **JSON** | Schema validation + field constraints | Validate LLM structured output format |
+| **SQL** | AST-based query validation | Block DROP/DELETE, enforce LIMIT, restrict tables |
+| **Luna-2** | AI-powered evaluation via Galileo | Toxicity detection, prompt injection scoring |
 
-- **Circular tool detection**: Monitor for alternating/repeating tool call patterns that indicate infinite loops
-- **Session context tracking**: Maintain conversation history, tools used, and execution metrics across turns
-- **Response caching**: Cache frequently accessed tool results to reduce redundant API calls
-- **Dataset-driven testing**: Use pytest + run_experiment to systematically test agent behavior
+### Actions
+
+| Action | Behavior | Exception Raised |
+|--------|----------|-----------------|
+| **deny** | Hard block — execution is stopped | `ControlViolationError` |
+| **steer** | Corrective guidance — provides context for retry | `ControlSteerError` |
+| **warn** | Logs a warning, execution continues | None |
+| **log** | Silent observability, execution continues | None |
+| **allow** | Explicit pass-through (overrides other matches) | None |
+
+**Priority:** deny wins > steer second > warn/log/allow
+
+### How the SDK Works
+
+```python
+import agent_control
+from agent_control import control, ControlViolationError
+
+# 1. Register with server
+agent_control.init(agent_name="my-agent")
+
+# 2. Decorate functions — the server evaluates controls automatically
+@control()
+async def chat(message: str) -> str:
+    return llm_call(message)
+
+# 3. Handle violations
+try:
+    result = await chat("show me SSN 123-45-6789")
+except ControlViolationError as e:
+    print(f"Blocked by {e.control_name}")
+```
+
+### Policies
+
+A **policy** is a named collection of controls that can be assigned to agents. Instead of attaching controls one by one, create a policy, add controls to it, then assign the policy to multiple agents. This enables environment-specific rule sets (e.g., "production-safety", "development-permissive").
 
 ---
 
@@ -446,7 +474,10 @@ Session: "user-conversation-42"
 | **Auto-instrumentation** | Automatic trace logging via a wrapped client |
 | **@log Decorator** | Turns a Python function into a Galileo span |
 | **Distributed Tracing** | Connecting spans from multiple services into one trace |
-| **Agent Control** | Observe + Evaluate + Protect applied to AI agents |
-| **Agent Framework Integration** | Auto-instrumentation for agent frameworks (OpenAI Agents, LangGraph, etc.) |
-| **Circular Tool Detection** | Pattern to prevent infinite loops in agent tool call sequences |
-| **Agentic Metrics** | 9 purpose-built metrics for evaluating agent behavior |
+| **Agent Control** | Standalone runtime guardrails platform for AI agents |
+| **Control** | Protection rule: scope + selector + evaluator + action |
+| **Policy** | Named collection of controls assigned to agents |
+| **Evaluator** | Checker logic: regex, list, JSON, SQL, or Luna-2 |
+| **@control() Decorator** | Wraps async functions for automatic server-side evaluation |
+| **ControlViolationError** | Exception raised when a deny action matches |
+| **ControlSteerError** | Exception raised when a steer action matches (provides correction context) |

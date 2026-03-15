@@ -307,55 +307,68 @@
 
 ---
 
-## 14. AGENT CONTROL
+## 14. AGENT CONTROL (Runtime Guardrails Platform)
 
-### 14.1 Agent Observability
+> Agent Control is a standalone open-source platform for adding runtime guardrails to AI agents.
+> Repo: https://github.com/agentcontrol/agent-control
+
+### 14.1 Agent Control Core
 | # | Feature | Status | Notes |
 |---|---------|--------|-------|
-| 14.1.1 | Agent span creation and nesting | ⬜ | AgentSpan for decision-making steps |
-| 14.1.2 | Tool span creation and nesting | ⬜ | ToolSpan for function/API invocations |
-| 14.1.3 | Workflow span orchestration | ⬜ | WorkflowSpan for named pipelines |
-| 14.1.4 | Session-based agent conversation grouping | ⬜ | Bundle multi-turn agent interactions |
-| 14.1.5 | @log decorator for agent/tool/workflow | ⬜ | Auto-span creation from Python functions |
-| 14.1.6 | Flowchart visualization of agent traces | ⬜ | Console tree view of span hierarchy |
+| 14.1.1 | agent_control.init() initialization | ⬜ | Register agent with server |
+| 14.1.2 | @control() decorator | ⬜ | Protect any async function |
+| 14.1.3 | Control definition (scope + selector + evaluator + action) | ⬜ | Core data model |
+| 14.1.4 | AgentControlClient HTTP client | ⬜ | Direct API interaction |
+| 14.1.5 | Server health check | ⬜ | Verify connectivity |
+| 14.1.6 | Background policy refresh | ⬜ | Auto-refresh controls cache |
 
-### 14.2 Agent Framework Integrations
+### 14.2 Built-in Evaluators
 | # | Feature | Status | Notes |
 |---|---------|--------|-------|
-| 14.2.1 | OpenAI Agents SDK (GalileoTracingProcessor) | ⬜ | Auto-captures agent events, tool calls, handoffs |
-| 14.2.2 | LangChain/LangGraph (GalileoCallback) | ⬜ | Callback-based, supports multi-agent graphs |
-| 14.2.3 | Strands Agents (OpenTelemetry) | ⬜ | OTel with GalileoSpanProcessor |
-| 14.2.4 | Microsoft Agent Framework (OpenTelemetry) | ⬜ | OTel integration |
-| 14.2.5 | MCP Server tool call logging | ⬜ | Manual tool span logging for MCP calls |
+| 14.2.1 | Regex evaluator | ⬜ | Pattern matching (SSN, PII, prompt injection) |
+| 14.2.2 | List evaluator | ⬜ | Value matching (banned terms, allowlists) |
+| 14.2.3 | JSON evaluator | ⬜ | Schema validation, field constraints, type checks |
+| 14.2.4 | SQL evaluator | ⬜ | Query validation, operation blocking, table access |
+| 14.2.5 | Luna-2 evaluator (Galileo) | ⬜ | AI-powered toxicity, injection detection |
 
-### 14.3 Agent Evaluation Metrics
-| # | Metric | Scope | Status | Notes |
-|---|--------|-------|--------|-------|
-| 14.3.1 | Action Advancement | Trace | ⬜ | Does each step advance toward the goal? |
-| 14.3.2 | Action Completion | Session | ⬜ | Did agent accomplish all objectives? |
-| 14.3.3 | Agent Efficiency | Session | ⬜ | Minimal redundant steps/tool calls? |
-| 14.3.4 | Agent Flow | Session | ⬜ | Validates trajectory against test conditions |
-| 14.3.5 | Reasoning Coherence | LLM span | ⬜ | Logical consistency of reasoning |
-| 14.3.6 | Tool Error Detection | Tool span | ⬜ | API failures, parameter errors, timeouts |
-| 14.3.7 | Tool Selection Quality | LLM span | ⬜ | Correct tool with correct arguments? |
-| 14.3.8 | Conversation Quality | Session | ⬜ | User satisfaction signal |
-| 14.3.9 | User Intent Change | Session | ⬜ | Detects goal shifts during session |
-
-### 14.4 Agent Guardrails (Runtime Protection)
+### 14.3 Actions and Error Handling
 | # | Feature | Status | Notes |
 |---|---------|--------|-------|
-| 14.4.1 | Agentic metric rules in Protect stages | ⬜ | action_advancement, action_completion as rules |
-| 14.4.2 | Tool reliability rules | ⬜ | tool_errors, tool_selection_quality as rules |
-| 14.4.3 | Circular tool detection patterns | ⬜ | Prevent infinite loops in agent workflows |
-| 14.4.4 | Agent response override on violation | ⬜ | Block or replace unsafe agent outputs |
+| 14.3.1 | Deny action | ⬜ | Hard block, raises ControlViolationError |
+| 14.3.2 | Steer action | ⬜ | Corrective guidance, raises ControlSteerError |
+| 14.3.3 | Warn action | ⬜ | Log warning, continue execution |
+| 14.3.4 | Log action | ⬜ | Observability only |
+| 14.3.5 | Allow action | ⬜ | Explicit pass-through |
+| 14.3.6 | ControlViolationError handling | ⬜ | Graceful deny recovery |
+| 14.3.7 | ControlSteerError handling | ⬜ | Steering context interpretation |
 
-### 14.5 Agent Reliability Patterns
+### 14.4 Agent and Control Management
 | # | Feature | Status | Notes |
 |---|---------|--------|-------|
-| 14.5.1 | Hierarchical span creation patterns | ⬜ | entrypoint → workflow → tool → session |
-| 14.5.2 | Session context tracking | ⬜ | conversationHistory, toolsUsed, metrics |
-| 14.5.3 | Response caching for tool calls | ⬜ | Reduce redundant API calls |
-| 14.5.4 | Dataset-driven agent testing | ⬜ | pytest + run_experiment for agents |
+| 14.4.1 | Register agent via SDK | ⬜ | agent_control.init() or agents API |
+| 14.4.2 | Create controls via SDK | ⬜ | controls.create_control() |
+| 14.4.3 | Associate controls with agent | ⬜ | agents.add_agent_control() |
+| 14.4.4 | List agent controls | ⬜ | agents.list_agent_controls() |
+| 14.4.5 | Create policy | ⬜ | policies.create_policy() |
+| 14.4.6 | Add controls to policy | ⬜ | policies.add_control_to_policy() |
+| 14.4.7 | Assign policy to agent | ⬜ | policies.assign_policy_to_agent() |
+
+### 14.5 Scope and Selector Configuration
+| # | Feature | Status | Notes |
+|---|---------|--------|-------|
+| 14.5.1 | Pre-execution scope (stages: ["pre"]) | ⬜ | Check inputs before execution |
+| 14.5.2 | Post-execution scope (stages: ["post"]) | ⬜ | Check outputs after execution |
+| 14.5.3 | Step type filtering (tool, llm) | ⬜ | Target specific step types |
+| 14.5.4 | Step name filtering | ⬜ | Target specific named functions |
+| 14.5.5 | Selector path expressions | ⬜ | Extract data (input, output, input.field) |
+
+### 14.6 Framework Integrations
+| # | Feature | Status | Notes |
+|---|---------|--------|-------|
+| 14.6.1 | LangChain integration | ⬜ | SQL agent protection |
+| 14.6.2 | CrewAI integration | ⬜ | Multi-agent guardrails |
+| 14.6.3 | Google ADK integration | ⬜ | Callback and decorator patterns |
+| 14.6.4 | Strands Agents integration | ⬜ | Steering handler |
 
 ---
 
@@ -376,5 +389,5 @@
 | Luna-2 Model | 4 | 0 | 0 | 0 |
 | Access Control | 5 | 0 | 0 | 0 |
 | SDK Features | 14 | 0 | 0 | 0 |
-| Agent Control | 24 | 0 | 0 | 0 |
-| **TOTAL** | **172** | **0** | **0** | **0** |
+| Agent Control | 34 | 0 | 0 | 0 |
+| **TOTAL** | **182** | **0** | **0** | **0** |

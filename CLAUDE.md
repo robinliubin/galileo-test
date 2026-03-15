@@ -10,8 +10,8 @@ An exploratory, educational project for learning the Galileo SDK (`galileo`) thr
 
 This repo follows a structured approach to learning and evaluating the Galileo platform:
 
-1. **Extract features** — Fetch the Galileo v2 docs, catalog every platform capability into a feature checklist (`docs/galileo-features.md`, 172 features across 14 categories)
-2. **Design scenarios** — Group features into realistic use cases that a developer would actually build (`docs/scenarios.md`, 8 scenarios covering ~112 features)
+1. **Extract features** — Fetch the Galileo v2 docs, catalog every platform capability into a feature checklist (`docs/galileo-features.md`, 182 features across 14 categories)
+2. **Design scenarios** — Group features into realistic use cases that a developer would actually build (`docs/scenarios.md`, 8 scenarios covering ~114 features)
 3. **Define terminology** — Extract core concepts and explain them for beginners (`docs/terminology.md` — spans, traces, metrics, experiments, guardrails, annotations)
 4. **Build notebooks** — For each scenario, create a self-contained Jupyter notebook under `agents/` in an exploratory, educational format so a new user with zero Galileo knowledge can follow along and learn the platform step by step
 
@@ -22,11 +22,8 @@ Features → Scenarios → Terminology → Notebooks. You can't write good tutor
 ## Architecture
 
 - **`agents/*.ipynb`** — Jupyter notebooks, one per scenario. Each is a self-contained entry point with detailed markdown explanations before every code cell.
-- **`agents/base.py`** — Shared base class for agent scenarios.
 - **`docs/`** — Reference documentation (feature checklist, scenario plan, terminology guide).
-- **`pyproject.toml`** — Python project config. Dependencies: `galileo[openai]`, `ipykernel`, `python-dotenv`.
-- **`.env`** — API keys (not committed). See `.env.example`.
-- **`.env.example`** — Template with required vars: `GALILEO_API_KEY`, `OPENAI_API_KEY`, optional `GALILEO_CONSOLE_URL`.
+- **`.env`** — API keys (`GALILEO_API_KEY`, `OPENAI_API_KEY`). Not committed. See `.env.example`.
 
 ## Setup
 
@@ -52,21 +49,9 @@ cp .env.example .env  # add API keys
 - Notebooks assume the reader knows nothing about Galileo
 - Each notebook creates its own Galileo project and includes a cleanup cell at the end
 - Notebooks are numbered to suggest a learning order (1–8)
-- All notebooks are idempotent — they use get-or-create patterns so re-running is safe
+- Notebook 8 requires a running Agent Control server (docker compose) — see README for setup
 
-## How to Add a New Scenario
-
-Follow the methodology pipeline:
-
-1. **Features** — Identify which Galileo features the scenario covers. Add them to `docs/galileo-features.md` if new.
-2. **Scenario** — Add a scenario entry to `docs/scenarios.md` with step-by-step feature coverage table.
-3. **Terminology** — Add any new concepts to `docs/terminology.md`.
-4. **Notebook** — Create `agents/N_name.ipynb` following the conventions above. Use the same env-loading and init patterns as existing notebooks.
-5. **README** — Add the notebook to the scenario table and project structure in `README.md`.
-
-## Gotchas
-
-- `enable_metrics()` **replaces** the entire metric set on a log stream — always pass ALL desired metrics in one call.
-- Guardrail stages created as `StageType.local` cannot include rulesets inline — use `StageType.central` when defining rulesets at creation time.
-- `prompt_injection` scorer may return empty values depending on environment/configuration — check `metric_results` in the response.
-- Experiment `model_alias` must match a model configured in your Galileo integrations (set up in the Console), not the raw model ID.
+## TO-DOs:
+- ~~follow same methodology for agent control: https://github.com/agentcontrol/agent-control~~ ✅ Done (Scenario 8)
+- refine galileo e2e test cases reference repo: https://github.com/rungalileo/e2e-testing
+- refine and enrich the features/scenarios with: https://github.com/rungalileo/galileo-university

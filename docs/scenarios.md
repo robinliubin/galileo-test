@@ -125,22 +125,26 @@
 
 ---
 
-### Scenario 8: Agent Control — Full-Lifecycle Agent Monitoring
-**Story:** A developer builds a multi-step AI agent that uses tools (search, API calls, database queries). They want end-to-end visibility: observe agent decisions, evaluate quality with agentic metrics, and protect against unsafe agent behavior at runtime.
+### Scenario 8: Agent Control — Runtime Guardrails for AI Agents
+**Story:** A developer wants to add runtime guardrails to their AI agent without embedding safety logic in the agent code. They use the Agent Control platform (separate server + SDK) to create configurable controls that evaluate agent inputs/outputs and take action (deny, steer, warn, log).
+
+**Prerequisites:** Agent Control server running locally via `docker compose up -d`
 
 | Step | What the user does | Features covered |
 |------|--------------------|-----------------|
-| 1 | Bootstrap Galileo context for agent monitoring | 1.1.1, 1.1.2 |
-| 2 | Log a multi-turn agent session with tool calls | 14.1.1, 14.1.2, 14.1.4, 1.1.3 |
-| 3 | Log nested workflow with agent → tool → LLM spans | 14.1.3, 14.1.1, 14.1.2, 1.1.5 |
-| 4 | Use @log decorator for agent functions | 14.1.5, 1.2.2 |
-| 5 | Enable agentic metrics (advancement, efficiency, flow) | 14.3.1, 14.3.3, 14.3.4 |
-| 6 | Enable tool metrics (error rate, selection quality) | 14.3.6, 14.3.7 |
-| 7 | Enable reasoning and session metrics | 14.3.5, 14.3.2, 14.3.8, 14.3.9 |
-| 8 | Create a guardrail stage with agentic metric rules | 14.4.1, 14.4.2 |
-| 9 | Test agent guardrail with safe and unsafe agent outputs | 14.4.4, 7.4, 7.5 |
-| 10 | Log a decorated agent with circular tool detection | 14.5.1, 14.4.3 |
-| **Total** | | **~20 features** |
+| 1 | Verify agent-control server health | 14.1.5 |
+| 2 | Register agent with agent_control.init() | 14.1.1 |
+| 3 | Create a regex control (SSN detection) | 14.1.4, 14.2.1, 14.3.1, 14.4.2 |
+| 4 | Create a list control (banned terms) | 14.2.2, 14.3.1 |
+| 5 | Associate controls with agent | 14.4.3 |
+| 6 | Decorate functions with @control() and test deny | 14.1.2, 14.5.1, 14.5.2 |
+| 7 | Handle ControlViolationError gracefully | 14.3.6 |
+| 8 | Create a steer control and handle ControlSteerError | 14.3.2, 14.3.7 |
+| 9 | Create a SQL evaluator control for database safety | 14.2.4, 14.5.3 |
+| 10 | Create a JSON evaluator control for output validation | 14.2.3, 14.5.5 |
+| 11 | Use Luna-2 evaluator for AI-powered safety (optional) | 14.2.5 |
+| 12 | Create a policy, add controls, assign to agent | 14.4.5, 14.4.6, 14.4.7 |
+| **Total** | | **~22 features** |
 
 ---
 
@@ -155,5 +159,5 @@
 | 5. Production Guardrails | ~12 | No (invoke_protect) |
 | 6. Custom Evaluation | ~12 | No (manual spans) |
 | 7. Human Annotation | ~10 | No (manual traces + annotation API) |
-| 8. Agent Control | ~20 | No (manual spans + invoke_protect) |
-| **Total unique** | **~112** | |
+| 8. Agent Control | ~22 | No (agent-control server) |
+| **Total unique** | **~114** | |

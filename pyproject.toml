@@ -8,4 +8,6 @@ dependencies = [
     "galileo[openai]>=1.49.0",
     "ipykernel>=7.2.0",
     "python-dotenv>=1.2.2",
+    "agent-control-sdk",
+    "nest-asyncio>=1.6.0",
 ]

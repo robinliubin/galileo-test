@@ -10,6 +10,7 @@ Each notebook in `agents/` is a self-contained scenario that teaches one area of
 
 - **Python 3.13** available on your system
 - **[uv](https://docs.astral.sh/uv/)** installed for dependency and environment management
+- **Docker** (for Scenario 8 — Agent Control server)
 - A **Galileo account** — sign up at [galileo.ai](https://galileo.ai)
 - An **OpenAI API key** — get one from [platform.openai.com/api-keys](https://platform.openai.com/api-keys)
 
@@ -53,7 +54,7 @@ source .venv/bin/activate
 | 5 | `agents/5_guardrails.ipynb` | Protect stages, rulesets, toxicity/PII/injection detection | No (invoke_protect) |
 | 6 | `agents/6_custom_eval.ipynb` | Custom Python metrics, safety metrics, available scorers, distributed tracing | No (manual spans) |
 | 7 | `agents/7_annotations.ipynb` | Annotation templates, human ratings, review workflows | No (manual traces + API) |
-| 8 | `agents/8_agent_control.ipynb` | Full agent lifecycle: observe spans, evaluate with agentic metrics, protect with guardrails | No (manual spans + invoke_protect) |
+| 8 | `agents/8_agent_control.ipynb` | Runtime guardrails with [Agent Control](https://github.com/agentcontrol/agent-control): controls, evaluators (regex/list/JSON/SQL/Luna-2), policies | No (agent-control server) |
 
 Each notebook:
 - Loads credentials from `.env`
