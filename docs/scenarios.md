@@ -125,6 +125,25 @@
 
 ---
 
+### Scenario 8: Agent Control — Full-Lifecycle Agent Monitoring
+**Story:** A developer builds a multi-step AI agent that uses tools (search, API calls, database queries). They want end-to-end visibility: observe agent decisions, evaluate quality with agentic metrics, and protect against unsafe agent behavior at runtime.
+
+| Step | What the user does | Features covered |
+|------|--------------------|-----------------|
+| 1 | Bootstrap Galileo context for agent monitoring | 1.1.1, 1.1.2 |
+| 2 | Log a multi-turn agent session with tool calls | 14.1.1, 14.1.2, 14.1.4, 1.1.3 |
+| 3 | Log nested workflow with agent → tool → LLM spans | 14.1.3, 14.1.1, 14.1.2, 1.1.5 |
+| 4 | Use @log decorator for agent functions | 14.1.5, 1.2.2 |
+| 5 | Enable agentic metrics (advancement, efficiency, flow) | 14.3.1, 14.3.3, 14.3.4 |
+| 6 | Enable tool metrics (error rate, selection quality) | 14.3.6, 14.3.7 |
+| 7 | Enable reasoning and session metrics | 14.3.5, 14.3.2, 14.3.8, 14.3.9 |
+| 8 | Create a guardrail stage with agentic metric rules | 14.4.1, 14.4.2 |
+| 9 | Test agent guardrail with safe and unsafe agent outputs | 14.4.4, 7.4, 7.5 |
+| 10 | Log a decorated agent with circular tool detection | 14.5.1, 14.4.3 |
+| **Total** | | **~20 features** |
+
+---
+
 ## Summary
 
 | Scenario | Features | Makes real LLM calls? |
@@ -136,4 +155,5 @@
 | 5. Production Guardrails | ~12 | No (invoke_protect) |
 | 6. Custom Evaluation | ~12 | No (manual spans) |
 | 7. Human Annotation | ~10 | No (manual traces + annotation API) |
-| **Total unique** | **~92** | |
+| 8. Agent Control | ~20 | No (manual spans + invoke_protect) |
+| **Total unique** | **~112** | |

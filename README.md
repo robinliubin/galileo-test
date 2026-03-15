@@ -53,6 +53,7 @@ source .venv/bin/activate
 | 5 | `agents/5_guardrails.ipynb` | Protect stages, rulesets, toxicity/PII/injection detection | No (invoke_protect) |
 | 6 | `agents/6_custom_eval.ipynb` | Custom Python metrics, safety metrics, available scorers, distributed tracing | No (manual spans) |
 | 7 | `agents/7_annotations.ipynb` | Annotation templates, human ratings, review workflows | No (manual traces + API) |
+| 8 | `agents/8_agent_control.ipynb` | Full agent lifecycle: observe spans, evaluate with agentic metrics, protect with guardrails | No (manual spans + invoke_protect) |
 
 Each notebook:
 - Loads credentials from `.env`
@@ -86,7 +87,8 @@ uv run main.py
 │   ├── 4_experiments.ipynb
 │   ├── 5_guardrails.ipynb
 │   ├── 6_custom_eval.ipynb
-│   └── 7_annotations.ipynb
+│   ├── 7_annotations.ipynb
+│   └── 8_agent_control.ipynb
 ├── docs/                # Reference documentation
 │   ├── terminology.md
 │   ├── scenarios.md

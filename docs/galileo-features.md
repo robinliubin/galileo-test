@@ -307,6 +307,58 @@
 
 ---
 
+## 14. AGENT CONTROL
+
+### 14.1 Agent Observability
+| # | Feature | Status | Notes |
+|---|---------|--------|-------|
+| 14.1.1 | Agent span creation and nesting | ⬜ | AgentSpan for decision-making steps |
+| 14.1.2 | Tool span creation and nesting | ⬜ | ToolSpan for function/API invocations |
+| 14.1.3 | Workflow span orchestration | ⬜ | WorkflowSpan for named pipelines |
+| 14.1.4 | Session-based agent conversation grouping | ⬜ | Bundle multi-turn agent interactions |
+| 14.1.5 | @log decorator for agent/tool/workflow | ⬜ | Auto-span creation from Python functions |
+| 14.1.6 | Flowchart visualization of agent traces | ⬜ | Console tree view of span hierarchy |
+
+### 14.2 Agent Framework Integrations
+| # | Feature | Status | Notes |
+|---|---------|--------|-------|
+| 14.2.1 | OpenAI Agents SDK (GalileoTracingProcessor) | ⬜ | Auto-captures agent events, tool calls, handoffs |
+| 14.2.2 | LangChain/LangGraph (GalileoCallback) | ⬜ | Callback-based, supports multi-agent graphs |
+| 14.2.3 | Strands Agents (OpenTelemetry) | ⬜ | OTel with GalileoSpanProcessor |
+| 14.2.4 | Microsoft Agent Framework (OpenTelemetry) | ⬜ | OTel integration |
+| 14.2.5 | MCP Server tool call logging | ⬜ | Manual tool span logging for MCP calls |
+
+### 14.3 Agent Evaluation Metrics
+| # | Metric | Scope | Status | Notes |
+|---|--------|-------|--------|-------|
+| 14.3.1 | Action Advancement | Trace | ⬜ | Does each step advance toward the goal? |
+| 14.3.2 | Action Completion | Session | ⬜ | Did agent accomplish all objectives? |
+| 14.3.3 | Agent Efficiency | Session | ⬜ | Minimal redundant steps/tool calls? |
+| 14.3.4 | Agent Flow | Session | ⬜ | Validates trajectory against test conditions |
+| 14.3.5 | Reasoning Coherence | LLM span | ⬜ | Logical consistency of reasoning |
+| 14.3.6 | Tool Error Detection | Tool span | ⬜ | API failures, parameter errors, timeouts |
+| 14.3.7 | Tool Selection Quality | LLM span | ⬜ | Correct tool with correct arguments? |
+| 14.3.8 | Conversation Quality | Session | ⬜ | User satisfaction signal |
+| 14.3.9 | User Intent Change | Session | ⬜ | Detects goal shifts during session |
+
+### 14.4 Agent Guardrails (Runtime Protection)
+| # | Feature | Status | Notes |
+|---|---------|--------|-------|
+| 14.4.1 | Agentic metric rules in Protect stages | ⬜ | action_advancement, action_completion as rules |
+| 14.4.2 | Tool reliability rules | ⬜ | tool_errors, tool_selection_quality as rules |
+| 14.4.3 | Circular tool detection patterns | ⬜ | Prevent infinite loops in agent workflows |
+| 14.4.4 | Agent response override on violation | ⬜ | Block or replace unsafe agent outputs |
+
+### 14.5 Agent Reliability Patterns
+| # | Feature | Status | Notes |
+|---|---------|--------|-------|
+| 14.5.1 | Hierarchical span creation patterns | ⬜ | entrypoint → workflow → tool → session |
+| 14.5.2 | Session context tracking | ⬜ | conversationHistory, toolsUsed, metrics |
+| 14.5.3 | Response caching for tool calls | ⬜ | Reduce redundant API calls |
+| 14.5.4 | Dataset-driven agent testing | ⬜ | pytest + run_experiment for agents |
+
+---
+
 ## Summary
 
 | Category | Total Features | Evaluated | Passing | Failing |
@@ -324,4 +376,5 @@
 | Luna-2 Model | 4 | 0 | 0 | 0 |
 | Access Control | 5 | 0 | 0 | 0 |
 | SDK Features | 14 | 0 | 0 | 0 |
-| **TOTAL** | **148** | **0** | **0** | **0** |
+| Agent Control | 24 | 0 | 0 | 0 |
+| **TOTAL** | **172** | **0** | **0** | **0** |

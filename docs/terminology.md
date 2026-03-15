@@ -386,6 +386,48 @@ Are you using OpenAI?
 
 ---
 
+## Agent Control
+
+### What is Agent Control?
+
+Agent Control is not a single Galileo feature — it's the combination of three capabilities applied to AI agents:
+
+1. **Observe** — Capture every agent decision, tool call, and LLM interaction as structured spans
+2. **Evaluate** — Score agent behavior with 9 purpose-built agentic metrics
+3. **Protect** — Apply runtime guardrails using agentic metric rules
+
+### Agent-Specific Span Patterns
+
+The typical span hierarchy for an agent:
+
+```
+Session: "user-conversation-42"
+ └── Trace: "Plan a trip to Tokyo"
+      └── Agent Span: "TravelPlannerAgent" (decision-making)
+           ├── Tool Span: search_flights() (action)
+           ├── Tool Span: search_hotels() (action)
+           └── LLM Span: "Summarize options" (generation)
+```
+
+### Agent Framework Integrations
+
+| Framework | Integration Method | Auto-captures |
+|-----------|-------------------|---------------|
+| OpenAI Agents SDK | GalileoTracingProcessor | Agent events, tool calls, handoffs |
+| LangChain/LangGraph | GalileoCallback | Full agent graph, multi-agent routing |
+| Strands Agents | OpenTelemetry (GalileoSpanProcessor) | Built-in telemetry |
+| Microsoft Agent Framework | OpenTelemetry (GalileoSpanProcessor) | LLM I/O with sensitive data option |
+| MCP Servers | Manual logger.add_tool_span() | Tool call inputs/outputs |
+
+### Agent Reliability Patterns
+
+- **Circular tool detection**: Monitor for alternating/repeating tool call patterns that indicate infinite loops
+- **Session context tracking**: Maintain conversation history, tools used, and execution metrics across turns
+- **Response caching**: Cache frequently accessed tool results to reduce redundant API calls
+- **Dataset-driven testing**: Use pytest + run_experiment to systematically test agent behavior
+
+---
+
 ## Glossary Quick Reference
 
 | Term | One-Line Definition |
@@ -404,3 +446,7 @@ Are you using OpenAI?
 | **Auto-instrumentation** | Automatic trace logging via a wrapped client |
 | **@log Decorator** | Turns a Python function into a Galileo span |
 | **Distributed Tracing** | Connecting spans from multiple services into one trace |
+| **Agent Control** | Observe + Evaluate + Protect applied to AI agents |
+| **Agent Framework Integration** | Auto-instrumentation for agent frameworks (OpenAI Agents, LangGraph, etc.) |
+| **Circular Tool Detection** | Pattern to prevent infinite loops in agent tool call sequences |
+| **Agentic Metrics** | 9 purpose-built metrics for evaluating agent behavior |

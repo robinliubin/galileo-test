@@ -48,4 +48,4 @@ cp .env.example .env  # add API keys
 - Every code cell has a preceding markdown cell explaining what it does and why
 - Notebooks assume the reader knows nothing about Galileo
 - Each notebook creates its own Galileo project and includes a cleanup cell at the end
-- Notebooks are numbered to suggest a learning order (1–7)
+- Notebooks are numbered to suggest a learning order (1–8)
