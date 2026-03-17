@@ -10,8 +10,8 @@ An exploratory, educational project for learning the Galileo SDK (`galileo`) thr
 
 This repo follows a structured approach to learning and evaluating the Galileo platform:
 
-1. **Extract features** — Fetch the Galileo v2 docs, catalog every platform capability into a feature checklist (`docs/galileo-features.md`, 182 features across 14 categories)
-2. **Design scenarios** — Group features into realistic use cases that a developer would actually build (`docs/scenarios.md`, 8 scenarios covering ~114 features)
+1. **Extract features** — Fetch the Galileo v2 docs, catalog every platform capability into a feature checklist (`docs/galileo-features.md`, 207 features across 16 categories)
+2. **Design scenarios** — Group features into realistic use cases that a developer would actually build (`docs/scenarios.md`, 9 scenarios covering ~130 features)
 3. **Define terminology** — Extract core concepts and explain them for beginners (`docs/terminology.md` — spans, traces, metrics, experiments, guardrails, annotations)
 4. **Build notebooks** — For each scenario, create a self-contained Jupyter notebook under `agents/` in an exploratory, educational format so a new user with zero Galileo knowledge can follow along and learn the platform step by step
 
@@ -48,8 +48,9 @@ cp .env.example .env  # add API keys
 - Every code cell has a preceding markdown cell explaining what it does and why
 - Notebooks assume the reader knows nothing about Galileo
 - Each notebook creates its own Galileo project and includes a cleanup cell at the end
-- Notebooks are numbered to suggest a learning order (1–8)
+- Notebooks are numbered to suggest a learning order (1–9)
 - Notebook 8 requires a running Agent Control server (docker compose) — see README for setup
+- Notebook 9's Auto-Tune REST API calls may fail gracefully if the endpoint isn't available
 
 ## TO-DOs:
 - ~~follow same methodology for agent control: https://github.com/agentcontrol/agent-control~~ ✅ Done (Scenario 8)

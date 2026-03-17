@@ -40,6 +40,8 @@
 | 1.2.3 | Framework auto-instrumentation | ⬜ | |
 | 1.2.4 | `galileo_context.init()` initialization | ⬜ | Already used in app.py |
 | 1.2.5 | `GalileoLogger` direct usage | ⬜ | |
+| 1.2.6 | Batch logging mode | ⬜ | |
+| 1.2.7 | OpenAI streaming support | ⬜ | |
 
 ### 1.3 Console Visualization
 | # | Feature | Status | Notes |
@@ -49,6 +51,10 @@
 | 1.3.3 | Condense Steps toggle | ⬜ | |
 | 1.3.4 | Latency inspection per span | ⬜ | |
 | 1.3.5 | Tool calls as separate spans | ⬜ | |
+| 1.3.6 | Session overview dashboard | ⬜ | |
+| 1.3.7 | Agent execution graph visualization | ⬜ | |
+| 1.3.8 | Log stream data export (CSV/JSON) | ⬜ | |
+| 1.3.9 | Column-based filtering in log streams | ⬜ | |
 
 ---
 
@@ -132,6 +138,9 @@
 | 3.11 | Custom code-based metrics (local) | ⬜ | Project-specific, client-side |
 | 3.12 | Composite metrics | ⬜ | Reference other metric results |
 | 3.13 | Metric version management | ⬜ | History and rollback |
+| 3.14 | Fine-tuned evaluation models | ⬜ | Custom fine-tuned metric models |
+| 3.15 | Scorer feedback mechanism | ⬜ | Feedback on metric scorer accuracy |
+| 3.16 | Code metrics at specific span levels (LLM, Tool, Retriever, Agent, Workflow, Trace, Session) | ⬜ | |
 
 ---
 
@@ -147,6 +156,8 @@
 | 4.6 | Prompt templates with `{{variable}}` syntax | ⬜ | |
 | 4.7 | Batch execution ("Run All") | ⬜ | |
 | 4.8 | Historical tracking | ⬜ | |
+| 4.9 | Experiment results export and charts | ⬜ | |
+| 4.10 | Re-run experiments with different model parameters | ⬜ | |
 
 ---
 
@@ -161,6 +172,7 @@
 | 5.5 | Organization-wide sharing | ⬜ | |
 | 5.6 | Add/extend rows | ⬜ | |
 | 5.7 | Derive datasets from logs | ⬜ | |
+| 5.8 | Copy log data to dataset | ⬜ | |
 
 ---
 
@@ -207,6 +219,7 @@
 | 8.5 | Slack webhook notifications | ⬜ | |
 | 8.6 | Default system metrics (Status Code, Cost, Latency) | ⬜ | |
 | 8.7 | Trends dashboard (widgets and sections) | ⬜ | |
+| 8.8 | Job monitoring and progress tracking | ⬜ | Background job status |
 
 ---
 
@@ -278,6 +291,10 @@
 | 12.3 | Role-based access (Admin/Manager/User/Read-only) | ⬜ | |
 | 12.4 | Group management (Enterprise) | ⬜ | |
 | 12.5 | API key management | ⬜ | |
+| 12.6 | Organization creation and management | ⬜ | |
+| 12.7 | Organization permissions | ⬜ | |
+| 12.8 | SSO authentication (Enterprise) | ⬜ | |
+| 12.9 | User onboarding flow | ⬜ | |
 
 ---
 
@@ -295,6 +312,8 @@
 | 13.1.7 | `create_custom_llm_metric()` | ⬜ | |
 | 13.1.8 | `ainvoke_protect()` (guardrails) | ⬜ | |
 | 13.1.9 | Metric sampling configuration | ⬜ | |
+| 13.1.10 | Batch logging mode | ⬜ | |
+| 13.1.11 | Future SDK object model (Project, Dataset, Experiment, Prompt, LogStream, Metric classes) | ⬜ | Next-gen API |
 
 ### 13.2 TypeScript SDK
 | # | Feature | Status | Notes |
@@ -304,6 +323,9 @@
 | 13.2.3 | Projects client | ⬜ | |
 | 13.2.4 | Scorers client | ⬜ | |
 | 13.2.5 | Logger client | ⬜ | |
+| 13.2.6 | Complex trace graph creation | ⬜ | |
+| 13.2.7 | LangChain callback handler | ⬜ | |
+| 13.2.8 | Log stream management | ⬜ | |
 
 ---
 
@@ -372,22 +394,41 @@
 
 ---
 
+## 15. AUTO-TUNE
+
+| # | Feature | Status | Notes |
+|---|---------|--------|-------|
+| 15.1 | Auto-tune with preset metrics | ⬜ | Automated metric optimization |
+| 15.2 | Auto-tune with custom metrics | ⬜ | |
+
+---
+
+## 16. PLAYGROUND
+
+| # | Feature | Status | Notes |
+|---|---------|--------|-------|
+| 16.1 | Interactive playground for LLM testing | ⬜ | |
+
+---
+
 ## Summary
 
 | Category | Total Features | Evaluated | Passing | Failing |
 |----------|---------------|-----------|---------|---------|
-| Observability | 16 | 0 | 0 | 0 |
+| Observability | 22 | 0 | 0 | 0 |
 | Evaluation Metrics | 31 | 0 | 0 | 0 |
-| Custom Metrics | 13 | 0 | 0 | 0 |
-| Experiments | 8 | 0 | 0 | 0 |
-| Datasets | 7 | 0 | 0 | 0 |
+| Custom Metrics | 16 | 0 | 0 | 0 |
+| Experiments | 10 | 0 | 0 | 0 |
+| Datasets | 8 | 0 | 0 | 0 |
 | Prompt Management | 5 | 0 | 0 | 0 |
 | Runtime Protection | 13 | 0 | 0 | 0 |
-| Alerts & Monitoring | 7 | 0 | 0 | 0 |
+| Alerts & Monitoring | 8 | 0 | 0 | 0 |
 | Annotations | 7 | 0 | 0 | 0 |
 | Integrations | 18 | 0 | 0 | 0 |
 | Luna-2 Model | 4 | 0 | 0 | 0 |
-| Access Control | 5 | 0 | 0 | 0 |
-| SDK Features | 14 | 0 | 0 | 0 |
+| Access Control | 9 | 0 | 0 | 0 |
+| SDK Features | 19 | 0 | 0 | 0 |
 | Agent Control | 34 | 0 | 0 | 0 |
-| **TOTAL** | **182** | **0** | **0** | **0** |
+| Auto-Tune | 2 | 0 | 0 | 0 |
+| Playground | 1 | 0 | 0 | 0 |
+| **TOTAL** | **207** | **0** | **0** | **0** |

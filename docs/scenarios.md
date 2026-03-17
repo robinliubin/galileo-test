@@ -15,7 +15,9 @@
 | 6 | Enable response quality metrics | 2.3.2 (correctness), 2.3.3 (instruction adherence) |
 | 7 | Enable safety metrics | 2.4.1 (PII), 2.4.4 (toxicity) |
 | 8 | Tag traces with metadata | 1.1.10 (tags/metadata) |
-| **Total** | | **~15 features** |
+| 9 | Export log stream data for offline analysis | 1.3.8 (log stream export) |
+| 10 | Filter columns in the log stream view | 1.3.9 (column filtering) |
+| **Total** | | **~17 features** |
 
 ---
 
@@ -31,7 +33,8 @@
 | 5 | Create evaluation dataset | 5.1 (create dataset), 5.6 (add rows) |
 | 6 | Run experiment comparing prompts | 4.1 (run_experiment), 4.6 (prompt templates) |
 | 7 | Check ground truth adherence | 2.3.1 (ground truth adherence) |
-| **Total** | | **~17 features** |
+| 8 | Copy production log data into a dataset for regression testing | 5.8 (copy log data to dataset) |
+| **Total** | | **~18 features** |
 
 ---
 
@@ -49,7 +52,11 @@
 | 7 | Enable tool metrics | 2.1.6 (tool error), 2.1.7 (tool selection quality) |
 | 8 | Enable reasoning metrics | 2.1.8 (reasoning coherence) |
 | 9 | Session-level metrics | 2.1.2 (action completion), 2.1.5 (conversation quality), 2.1.9 (user intent change) |
-| **Total** | | **~18 features** |
+| 10 | Use batch logging mode for high-throughput agent runs | 1.2.6 (batch logging mode) |
+| 11 | View session overview dashboard | 1.3.6 (session overview dashboard) |
+| 12 | Visualize agent execution as a graph | 1.3.7 (agent graph visualization) |
+| 13 | Log complex multi-branch trace graphs | 13.2.6 (complex trace graphs) |
+| **Total** | | **~22 features** |
 
 ---
 
@@ -68,7 +75,11 @@
 | 8 | Evaluate with BLEU/ROUGE | 2.6.1 (BLEU, ROUGE) |
 | 9 | Evaluate tone | 2.6.2 (tone) |
 | 10 | Check model confidence | 2.5.1 (perplexity), 2.5.2 (uncertainty) |
-| **Total** | | **~15 features** |
+| 11 | Enable fine-tuned metrics for domain-specific evaluation | 3.14 (fine-tuned metrics) |
+| 12 | Export experiment results and view comparison charts | 4.9 (experiment export/charts) |
+| 13 | Re-run experiments with modified parameters | 4.10 (re-run experiments) |
+| 14 | Monitor long-running experiment jobs | 8.8 (job monitoring) |
+| **Total** | | **~19 features** |
 
 ---
 
@@ -103,7 +114,9 @@
 | 6 | Enable safety metrics alongside custom | 2.4.2 (prompt injection), 2.4.3 (sexism/bias) |
 | 7 | List available scorers | 3.1a (list scorers) |
 | 8 | Get distributed tracing headers | 1.1.11 (distributed tracing) |
-| **Total** | | **~12 features** |
+| 9 | Enable code metrics at individual span levels | 3.16 (code metrics at span levels) |
+| 10 | Use LangChain callback handler for auto-instrumentation | 13.2.7 (LangChain callback) |
+| **Total** | | **~14 features** |
 
 ---
 
@@ -148,16 +161,32 @@
 
 ---
 
+### Scenario 9: Auto-Tune & Playground — Iterative Prompt and Metric Improvement
+**Story:** A developer wants to go beyond manual prompt engineering. They use the Galileo Playground to interactively test prompts, leverage Auto-Tune to automatically optimize prompt templates, and use scorer feedback to refine custom metrics — creating a tight iteration loop for continuous improvement.
+
+| Step | What the user does | Features covered |
+|------|--------------------|-----------------|
+| 1 | Bootstrap Galileo quickstart context (auto-creates project + log stream) | 1.1.1, 1.1.2 |
+| 2 | Open the Playground to interactively test prompts and inspect outputs | 16.1 (Playground) |
+| 3 | Run Auto-Tune to automatically optimize a prompt template | 15.1 (Auto-Tune prompt optimization) |
+| 4 | Compare Auto-Tune suggestions against baseline in the Playground | 15.2 (Auto-Tune evaluation), 16.1 |
+| 5 | Define a custom scorer and submit feedback to improve it | 3.15 (scorer feedback) |
+| 6 | Re-run experiments with the optimized prompt and refined scorer | 4.1 (run_experiment) |
+| **Total** | | **~8 features** |
+
+---
+
 ## Summary
 
 | Scenario | Features | Makes real LLM calls? |
 |----------|----------|----------------------|
-| 1. Simple Chatbot | ~15 | Yes (OpenAI) |
-| 2. RAG Application | ~17 | Yes (via experiment) |
-| 3. AI Agent + Tools | ~18 | No (manual spans) |
-| 4. Prompt Engineering | ~15 | Yes (via experiment) |
+| 1. Simple Chatbot | ~17 | Yes (OpenAI) |
+| 2. RAG Application | ~18 | Yes (via experiment) |
+| 3. AI Agent + Tools | ~22 | No (manual spans) |
+| 4. Prompt Engineering | ~19 | Yes (via experiment) |
 | 5. Production Guardrails | ~12 | No (invoke_protect) |
-| 6. Custom Evaluation | ~12 | No (manual spans) |
+| 6. Custom Evaluation | ~14 | No (manual spans) |
 | 7. Human Annotation | ~10 | No (manual traces + annotation API) |
 | 8. Agent Control | ~22 | No (agent-control server) |
-| **Total unique** | **~114** | |
+| 9. Auto-Tune & Playground | ~8 | Yes (Playground + Auto-Tune) |
+| **Total unique** | **~130** | |
