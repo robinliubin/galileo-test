@@ -176,6 +176,25 @@
 
 ---
 
+### Scenario 10: OpenTelemetry & OpenInference Integration
+**Story:** A developer already has OpenTelemetry infrastructure and wants to send AI traces to Galileo without switching to a vendor-specific SDK. They use the `GalileoSpanProcessor` to bridge OTel spans to Galileo and the OpenInference instrumentor for automatic OpenAI capture.
+
+| Step | What the user does | Features covered |
+|------|--------------------|-----------------|
+| 1 | Create Galileo project and log stream | 1.1.1, 1.1.2 |
+| 2 | Set up OTel TracerProvider with GalileoSpanProcessor | 13.3.1 (OTel integration) |
+| 3 | Instrument OpenAI via OpenInference instrumentor | 13.3.2 (OpenInference), 10.1.1 |
+| 4 | Make LLM call and verify trace export | 1.1.4 (traces), 1.1.5 (LLM spans) |
+| 5 | Stream a response via OTel pipeline | 10.1.1b (streaming) |
+| 6 | Multi-turn conversation with OTel spans | 1.1.4 (traces) |
+| 7 | Create custom OTel spans (workflow, retrieval, tool) | 1.1.7, 1.1.8, 1.1.9 |
+| 8 | Enable quality and safety metrics on OTel traces | 2.3.2, 2.3.3, 2.4.1, 2.4.4 |
+| 9 | Generate traces with metric scoring | 2.3.2, 2.4.1 |
+| 10 | Force flush and verify export | 13.3.3 (OTel flush) |
+| **Total** | | **~14 features** |
+
+---
+
 ## Summary
 
 | Scenario | Features | Makes real LLM calls? |
@@ -189,4 +208,5 @@
 | 7. Human Annotation | ~10 | No (manual traces + annotation API) |
 | 8. Agent Control | ~22 | No (agent-control server) |
 | 9. Auto-Tune & Playground | ~8 | Yes (Playground + Auto-Tune) |
-| **Total unique** | **~130** | |
+| 10. OTel & OpenInference | ~14 | Yes (OpenAI via OTel) |
+| **Total unique** | **~144** | |
