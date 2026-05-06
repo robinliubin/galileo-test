@@ -42,6 +42,7 @@ cp .env.example .env  # add API keys
 - **Experiments**: Run a prompt template or Python function over a dataset, score every row.
 - **Guardrails**: Runtime protection via `invoke_protect()` with stages, rulesets, and actions.
 - **OpenTelemetry**: Uses `GalileoSpanProcessor` + `TracerProvider` + OpenInference instrumentors — standard OTel pipeline, no Galileo-specific client needed.
+- **Pure OTel (Customer Pattern)**: Raw `OTLPSpanExporter` + `BatchSpanProcessor` targeting `{api_url}/otel/traces` with `Galileo-API-Key`, `project`, `logstream` headers — zero Galileo SDK helpers in the span path.
 - All traces are viewable in the Galileo Console at the project/log-stream URLs printed after execution.
 
 ## Notebook Conventions
@@ -49,7 +50,7 @@ cp .env.example .env  # add API keys
 - Every code cell has a preceding markdown cell explaining what it does and why
 - Notebooks assume the reader knows nothing about Galileo
 - Each notebook creates its own Galileo project and includes a cleanup cell at the end
-- Notebooks are numbered to suggest a learning order (1–10)
+- Notebooks are numbered to suggest a learning order (1–12)
 - Notebook 8 requires a running Agent Control server (docker compose) — see README for setup
 - Notebook 9's Auto-Tune REST API calls may fail gracefully if the endpoint isn't available
 

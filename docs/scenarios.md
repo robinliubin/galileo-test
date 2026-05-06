@@ -184,14 +184,43 @@
 | 1 | Create Galileo project and log stream | 1.1.1, 1.1.2 |
 | 2 | Set up OTel TracerProvider with GalileoSpanProcessor | 13.3.1 (OTel integration) |
 | 3 | Instrument OpenAI via OpenInference instrumentor | 13.3.2 (OpenInference), 10.1.1 |
-| 4 | Make LLM call and verify trace export | 1.1.4 (traces), 1.1.5 (LLM spans) |
-| 5 | Stream a response via OTel pipeline | 10.1.1b (streaming) |
-| 6 | Multi-turn conversation with OTel spans | 1.1.4 (traces) |
-| 7 | Create custom OTel spans (workflow, retrieval, tool) | 1.1.7, 1.1.8, 1.1.9 |
-| 8 | Enable quality and safety metrics on OTel traces | 2.3.2, 2.3.3, 2.4.1, 2.4.4 |
-| 9 | Generate traces with metric scoring | 2.3.2, 2.4.1 |
-| 10 | Force flush and verify export | 13.3.3 (OTel flush) |
+| 4 | Make an OpenAI call and verify trace export | 1.1.4 (traces), 1.1.5 (LLM spans) |
+| 5 | Combine workflow, retriever, LLM, and tool spans in one trace | 1.1.4, 1.1.7, 1.1.8, 1.1.9 |
+| 6 | Refactor repeated span creation into reusable decorators | 13.3.1, 13.3.2 |
+| 7 | Force flush and cleanly shut down the OTel pipeline | 13.3.3 (OTel flush) |
 | **Total** | | **~14 features** |
+
+---
+
+### Scenario 11: Pure OpenTelemetry Integration (Customer Pattern)
+**Story:** An enterprise team already has OpenTelemetry infrastructure with `TracerProvider`, `BatchSpanProcessor`, and OpenInference semantic conventions. They want Galileo as just another OTLP backend — no vendor-specific span helpers, no Galileo schema classes. The only Galileo-specific parts are the OTLP endpoint URL and three HTTP headers.
+
+| Step | What the user does | Features covered |
+|------|--------------------|-----------------|
+| 1 | Create Galileo project and log stream, read back API URL and key | 1.1.1, 1.1.2 |
+| 2 | Build a standard OTel TracerProvider with raw OTLPSpanExporter targeting `{api_url}/otel/traces` | 10.3.1 (OTel/OpenInference) |
+| 3 | Instrument OpenAI via OpenInference | 10.3.1, 10.1.1 |
+| 4 | Make an auto-instrumented LLM call and verify it arrives in Galileo | 1.1.4 (traces), 1.1.5 (LLM spans) |
+| 5 | Create workflow, retriever, and tool spans with `tracer.start_as_current_span` and `SpanAttributes.OPENINFERENCE_SPAN_KIND` | 1.1.7, 1.1.8, 1.1.9 |
+| 6 | Attach business-specific attributes (`workflow.name`, `usecase.id`, `step.name`, `http.url`, etc.) | 1.1.10 (tags/metadata) |
+| 7 | Wrap repeated span logic in reusable decorators | 10.3.1 |
+| 8 | Add HTTP auto-instrumentation via `RequestsInstrumentor` | 10.3.1 |
+| **Total** | | **~12 features** |
+
+---
+
+### Scenario 12: Enterprise OTel Pattern — Fully Manual Spans
+**Story:** An enterprise team wants maximum control and zero vendor dependencies in the span path. Every span — workflow, retriever, LLM, and tool — is created manually with `tracer.start_as_current_span(...)`. Only `RequestsInstrumentor` is used for HTTP auto-instrumentation. No OpenInference instrumentors.
+
+| Step | What the user does | Features covered |
+|------|--------------------|-----------------|
+| 1 | Create Galileo project and log stream, read back API URL and key | 1.1.1, 1.1.2 |
+| 2 | Build standard OTel pipeline with raw OTLPSpanExporter + RequestsInstrumentor | 10.3.1 |
+| 3 | Create a manual LLM span with `gen_ai.*` attributes | 1.1.5 (LLM spans) |
+| 4 | Create nested workflow → retriever → LLM → tool spans (all manual) | 1.1.4, 1.1.7, 1.1.8, 1.1.9 |
+| 5 | Attach business-specific attributes (`workflow.name`, `usecase.id`, etc.) | 1.1.10 (tags/metadata) |
+| 6 | Wrap repeated span logic in decorators including `@otel_llm` | 10.3.1 |
+| **Total** | | **~10 features** |
 
 ---
 
@@ -209,4 +238,6 @@
 | 8. Agent Control | ~22 | No (agent-control server) |
 | 9. Auto-Tune & Playground | ~8 | Yes (Playground + Auto-Tune) |
 | 10. OTel & OpenInference | ~14 | Yes (OpenAI via OTel) |
-| **Total unique** | **~144** | |
+| 11. Pure OTel (Customer) | ~12 | Yes (OpenAI via OTel) |
+| 12. Manual OTel (Enterprise) | ~10 | Yes (OpenAI, manual spans) |
+| **Total unique** | **~166** | |

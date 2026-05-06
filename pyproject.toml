@@ -5,13 +5,12 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
-    "galileo[openai]>=1.49.0",
+    "galileo[openai,otel]>=1.49.0",
     "ipykernel>=7.2.0",
     "python-dotenv>=1.2.2",
     "agent-control-sdk",
     "nest-asyncio>=1.6.0",
-    "opentelemetry-api>=1.28.0",
-    "opentelemetry-sdk>=1.28.0",
-    "opentelemetry-exporter-otlp>=1.28.0",
-    "opentelemetry-instrumentation-openai-v2>=2.0b0",
+    "openinference-instrumentation-openai>=0.1.44",
+    "opentelemetry-instrumentation-requests>=0.62b0",
+    "nbconvert>=7.17.1",
 ]

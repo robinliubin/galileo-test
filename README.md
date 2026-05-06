@@ -55,6 +55,10 @@ source .venv/bin/activate
 | 6 | `agents/6_custom_eval.ipynb` | Custom Python metrics, safety metrics, available scorers, distributed tracing | No (manual spans) |
 | 7 | `agents/7_annotations.ipynb` | Annotation templates, human ratings, review workflows | No (manual traces + API) |
 | 8 | `agents/8_agent_control.ipynb` | Runtime guardrails with [Agent Control](https://github.com/agentcontrol/agent-control): controls, evaluators (regex/list/JSON/SQL/Luna-2), policies | No (agent-control server) |
+| 9 | `agents/9_auto_tune.ipynb` | Playground workflows, Auto-Tune prompt optimization, scorer feedback loops | Yes (Playground + Auto-Tune) |
+| 10 | `agents/10_otel_openinference.ipynb` | Galileo OTLP ingestion with `GalileoSpanProcessor`, OpenInference OpenAI auto-instrumentation, custom workflow/retriever/tool spans | Yes (OpenAI via OTel) |
+| 11 | `agents/11_pure_otel.ipynb` | Pure OTel pipeline (`OTLPSpanExporter` + `BatchSpanProcessor`) targeting Galileo, OpenInference OpenAI auto-instrumentation, custom business attributes | Yes (OpenAI via OTel) |
+| 12 | `agents/12_manual_otel.ipynb` | Fully manual spans (no OpenInference), manual LLM/retriever/tool/workflow spans with `gen_ai.*` attributes, `RequestsInstrumentor` for HTTP | Yes (OpenAI, manual spans) |
 
 Each notebook:
 - Loads credentials from `.env`
@@ -72,12 +76,6 @@ Each notebook:
 | `docs/scenarios.md` | Scenario-based test plan with feature coverage matrix |
 | `docs/galileo-features.md` | Full Galileo platform feature checklist (148 features) |
 
-## Running Scripts
-
-```bash
-uv run main.py
-```
-
 ## Project Structure
 
 ```
@@ -89,7 +87,11 @@ uv run main.py
 │   ├── 5_guardrails.ipynb
 │   ├── 6_custom_eval.ipynb
 │   ├── 7_annotations.ipynb
-│   └── 8_agent_control.ipynb
+│   ├── 8_agent_control.ipynb
+│   ├── 9_auto_tune.ipynb
+│   ├── 10_otel_openinference.ipynb
+│   ├── 11_pure_otel.ipynb
+│   └── 12_manual_otel.ipynb
 ├── docs/                # Reference documentation
 │   ├── terminology.md
 │   ├── scenarios.md
