@@ -7,38 +7,87 @@ resolution-markers = [
 ]
 
 [[package]]
+name = "agent-control-engine"
+version = "7.6.0"
+source = { directory = "/Users/binliu/Documents/rungalileo/agent-control/engine" }
+dependencies = [
+    { name = "agent-control-evaluators" },
+    { name = "agent-control-models" },
+    { name = "google-re2" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "agent-control-evaluators", editable = "../../agent-control/evaluators/builtin" },
+    { name = "agent-control-models", editable = "../../agent-control/models" },
+    { name = "google-re2", specifier = ">=1.1" },
+]
+
+[package.metadata.requires-dev]
+dev = [
+    { name = "mypy", specifier = ">=1.8.0" },
+    { name = "pytest", specifier = ">=8.0.0" },
+    { name = "pytest-asyncio", specifier = ">=0.23.0" },
+    { name = "pytest-cov", specifier = ">=4.0.0" },
+    { name = "ruff", specifier = ">=0.1.0" },
+]
+
+[[package]]
 name = "agent-control-evaluators"
-version = "6.8.0"
-source = { registry = "https://pypi.org/simple" }
+version = "7.6.0"
+source = { editable = "../../agent-control/evaluators/builtin" }
 dependencies = [
     { name = "agent-control-models" },
     { name = "google-re2" },
     { name = "jsonschema" },
     { name = "pydantic" },
     { name = "sqlglot", extra = ["c"] },
+    { name = "sqlglotc" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/4c/20/5e560ccfb9eaced388b77852e66bab27fb0c9eeb2a2149953a27191845bc/agent_control_evaluators-6.8.0.tar.gz", hash = "sha256:cb456539399c8a1e5befe702941055d551ae3409e2192adab6d1391e44e4f6eb", size = 44277, upload-time = "2026-03-12T21:31:32.873Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/0c/b7/d34be9921bccf827b968d63b91d0ae49cab55c1c960b9f1bb805d44c3087/agent_control_evaluators-6.8.0-py3-none-any.whl", hash = "sha256:f2acabdfb30380fe4c5ac614d0b081fef1e554e0c963256a7979390b5a70613a", size = 35009, upload-time = "2026-03-12T21:31:31.808Z" },
+
+[package.metadata]
+requires-dist = [
+    { name = "agent-control-evaluator-budget", marker = "extra == 'budget'", editable = "../../agent-control/evaluators/contrib/budget" },
+    { name = "agent-control-evaluator-cisco", marker = "extra == 'cisco'", editable = "../../agent-control/evaluators/contrib/cisco" },
+    { name = "agent-control-evaluator-galileo", marker = "extra == 'galileo'", editable = "../../agent-control/evaluators/contrib/galileo" },
+    { name = "agent-control-models", editable = "../../agent-control/models" },
+    { name = "google-re2", specifier = ">=1.1" },
+    { name = "jsonschema", specifier = ">=4.0.0" },
+    { name = "pydantic", specifier = ">=2.12.4" },
+    { name = "pytest", marker = "extra == 'dev'", specifier = ">=8.0.0" },
+    { name = "pytest-asyncio", marker = "extra == 'dev'", specifier = ">=0.23.0" },
+    { name = "sqlglot", extras = ["c"], specifier = ">=29.0.0,<29.1.0" },
+    { name = "sqlglotc", specifier = ">=29.0.0,<29.1.0" },
 ]
+provides-extras = ["galileo", "budget", "cisco", "dev"]
 
 [[package]]
 name = "agent-control-models"
-version = "6.8.0"
-source = { registry = "https://pypi.org/simple" }
+version = "7.6.0"
+source = { editable = "../../agent-control/models" }
 dependencies = [
     { name = "jsonschema" },
     { name = "pydantic" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/6e/11/b55eb31a47f4343a900638dd98dd990cd29ceb8028c12603d5f86be52b4a/agent_control_models-6.8.0.tar.gz", hash = "sha256:d6bc61f89da508bb5ce65260e2b888d54d2f31ec8fd58aca6c8d84b2929e4cca", size = 19069, upload-time = "2026-03-12T21:31:28.684Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/6f/a8/9eabf82b683f00c17fbab75c5b3f850bb6e681140055409b0d3d78a6daa5/agent_control_models-6.8.0-py3-none-any.whl", hash = "sha256:3fadcce8b29c5eb42b9a4a56ba96f41b4ad93cec817ea30c10b811b03f05715d", size = 23869, upload-time = "2026-03-12T21:31:27.831Z" },
+
+[package.metadata]
+requires-dist = [
+    { name = "jsonschema", specifier = ">=4.0.0" },
+    { name = "pydantic", specifier = ">=2.12.4" },
+]
+
+[package.metadata.requires-dev]
+dev = [
+    { name = "mypy", specifier = ">=1.8.0" },
+    { name = "pytest", specifier = ">=8.0.0" },
+    { name = "pytest-cov", specifier = ">=4.0.0" },
+    { name = "ruff", specifier = ">=0.1.0" },
 ]
 
 [[package]]
 name = "agent-control-sdk"
-version = "6.8.0"
-source = { registry = "https://pypi.org/simple" }
+version = "7.6.0"
+source = { directory = "/Users/binliu/Documents/rungalileo/agent-control/sdks/python" }
 dependencies = [
     { name = "agent-control-evaluators" },
     { name = "docstring-parser" },
@@ -48,9 +97,53 @@ dependencies = [
     { name = "pydantic" },
     { name = "pydantic-settings" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/ab/32/a211256d3f30bfbbab2b811e2cf646063d9b31007aff268e33c0d81cd5f2/agent_control_sdk-6.8.0.tar.gz", hash = "sha256:2e256d2eb76f3c07d4d1a9f4566523a362ef9b7e777999b4e51b9d4034b9d550", size = 138494, upload-time = "2026-03-12T21:31:37.178Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/8d/e4/4dbb60408b3a53f92b8a9884b2731fb240022f7e046b587bfeeb3b89ed53/agent_control_sdk-6.8.0-py3-none-any.whl", hash = "sha256:d5686b6b696ff42f2db43334e1a741df5efa2ad9f76ed3568ddda80c28cbcccc", size = 94374, upload-time = "2026-03-12T21:31:36.126Z" },
+
+[package.metadata]
+requires-dist = [
+    { name = "agent-control-evaluator-galileo", marker = "extra == 'galileo'", editable = "../../agent-control/evaluators/contrib/galileo" },
+    { name = "agent-control-evaluators", editable = "../../agent-control/evaluators/builtin" },
+    { name = "docstring-parser", specifier = ">=0.15" },
+    { name = "google-adk", marker = "extra == 'google-adk'", specifier = ">=1.0.0" },
+    { name = "google-re2", specifier = ">=1.1" },
+    { name = "httpx", specifier = ">=0.26.0" },
+    { name = "jsonschema", specifier = ">=4.0.0" },
+    { name = "pydantic", specifier = ">=2.5.0" },
+    { name = "pydantic-settings", specifier = ">=2.0.0" },
+    { name = "strands-agents", marker = "extra == 'strands-agents'", specifier = ">=1.26.0" },
+]
+provides-extras = ["strands-agents", "google-adk", "galileo"]
+
+[package.metadata.requires-dev]
+dev = [
+    { name = "agent-control-engine", editable = "../../agent-control/engine" },
+    { name = "agent-control-evaluators", editable = "../../agent-control/evaluators/builtin" },
+    { name = "agent-control-models", editable = "../../agent-control/models" },
+    { name = "agent-control-telemetry", editable = "../../agent-control/telemetry" },
+    { name = "mypy", specifier = ">=1.8.0" },
+    { name = "pytest", specifier = ">=8.0.0" },
+    { name = "pytest-asyncio", specifier = ">=0.23.0" },
+    { name = "pytest-cov", specifier = ">=4.0.0" },
+    { name = "ruff", specifier = ">=0.1.0" },
+    { name = "strands-agents", specifier = ">=1.26.0" },
+]
+
+[[package]]
+name = "agent-control-telemetry"
+version = "7.6.0"
+source = { directory = "/Users/binliu/Documents/rungalileo/agent-control/telemetry" }
+dependencies = [
+    { name = "agent-control-models" },
+]
+
+[package.metadata]
+requires-dist = [{ name = "agent-control-models", editable = "../../agent-control/models" }]
+
+[package.metadata.requires-dev]
+dev = [
+    { name = "agent-control-models", editable = "../../agent-control/models" },
+    { name = "mypy", specifier = ">=1.8.0" },
+    { name = "pytest", specifier = ">=8.0.0" },
+    { name = "ruff", specifier = ">=0.1.0" },
 ]
 
 [[package]]
@@ -1545,7 +1638,9 @@ name = "robin-test"
 version = "0.1.0"
 source = { virtual = "." }
 dependencies = [
+    { name = "agent-control-engine" },
     { name = "agent-control-sdk" },
+    { name = "agent-control-telemetry" },
     { name = "galileo", extra = ["openai", "otel"] },
     { name = "ipykernel" },
     { name = "nbconvert" },
@@ -1557,7 +1652,9 @@ dependencies = [
 
 [package.metadata]
 requires-dist = [
-    { name = "agent-control-sdk" },
+    { name = "agent-control-engine", directory = "/Users/binliu/Documents/rungalileo/agent-control/engine" },
+    { name = "agent-control-sdk", directory = "/Users/binliu/Documents/rungalileo/agent-control/sdks/python" },
+    { name = "agent-control-telemetry", directory = "/Users/binliu/Documents/rungalileo/agent-control/telemetry" },
     { name = "galileo", extras = ["openai", "otel"], specifier = ">=1.49.0" },
     { name = "ipykernel", specifier = ">=7.2.0" },
     { name = "nbconvert", specifier = ">=7.17.1" },

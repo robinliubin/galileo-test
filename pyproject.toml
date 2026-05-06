@@ -9,8 +9,20 @@ dependencies = [
     "ipykernel>=7.2.0",
     "python-dotenv>=1.2.2",
     "agent-control-sdk",
+    "agent-control-telemetry",
+    "agent-control-engine",
     "nest-asyncio>=1.6.0",
     "openinference-instrumentation-openai>=0.1.44",
     "opentelemetry-instrumentation-requests>=0.62b0",
     "nbconvert>=7.17.1",
 ]
+
+[tool.uv.sources]
+# Source agent-control-sdk from the local v7.6.0 monorepo workspace.
+# PyPI's `agent-control-sdk` is stuck at v6.8.0, incompatible with the v7.6.0
+# server image. For portability, swap `path = ...` for a git source:
+#   agent-control-sdk = { git = "https://github.com/agentcontrol/agent-control", tag = "v7.6.0", subdirectory = "sdks/python" }
+agent-control-sdk = { path = "/Users/binliu/Documents/rungalileo/agent-control/sdks/python" }
+# v7.6.0 SDK imports `agent_control_telemetry` even though it's missing from sdks/python/pyproject.toml.
+agent-control-telemetry = { path = "/Users/binliu/Documents/rungalileo/agent-control/telemetry" }
+agent-control-engine = { path = "/Users/binliu/Documents/rungalileo/agent-control/engine" }
