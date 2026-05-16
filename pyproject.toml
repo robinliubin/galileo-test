@@ -5,24 +5,42 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
-    "galileo[openai,otel]>=1.49.0",
+    "galileo[openai,otel,middleware]>=1.49.0",
     "ipykernel>=7.2.0",
     "python-dotenv>=1.2.2",
-    "agent-control-sdk",
-    "agent-control-telemetry",
-    "agent-control-engine",
     "nest-asyncio>=1.6.0",
     "openinference-instrumentation-openai>=0.1.44",
     "opentelemetry-instrumentation-requests>=0.62b0",
     "nbconvert>=7.17.1",
+    "fastapi>=0.117.1",
+    "uvicorn>=0.37.0",
+    "httpx>=0.28.1",
 ]
 
-[tool.uv.sources]
-# Source agent-control-sdk from the local v7.6.0 monorepo workspace.
-# PyPI's `agent-control-sdk` is stuck at v6.8.0, incompatible with the v7.6.0
-# server image. For portability, swap `path = ...` for a git source:
-#   agent-control-sdk = { git = "https://github.com/agentcontrol/agent-control", tag = "v7.6.0", subdirectory = "sdks/python" }
-agent-control-sdk = { path = "/Users/binliu/Documents/rungalileo/agent-control/sdks/python" }
-# v7.6.0 SDK imports `agent_control_telemetry` even though it's missing from sdks/python/pyproject.toml.
-agent-control-telemetry = { path = "/Users/binliu/Documents/rungalileo/agent-control/telemetry" }
-agent-control-engine = { path = "/Users/binliu/Documents/rungalileo/agent-control/engine" }
+# Scenario 8 (Agent Control) deps are commented out because they require the
+# agent-control monorepo to be checked out locally at the paths below. Uncomment
+# both the dependency-group and the matching [tool.uv.sources] entries — uv
+# validates every source path even for deps in inactive groups, so the source
+# stanzas must be commented out too when the local checkout is missing.
+#
+# Install with: `uv sync --group agent-control`
+#
+# [dependency-groups]
+# agent-control = [
+#     "agent-control-sdk",
+#     "agent-control-telemetry",
+#     "agent-control-engine",
+# ]
+#
+# [tool.uv.sources]
+# # PyPI's `agent-control-sdk` is stuck at v6.8.0, incompatible with the v7.6.0
+# # server image. For portability, swap `path = ...` for a git source:
+# #   agent-control-sdk = { git = "https://github.com/agentcontrol/agent-control", tag = "v7.6.0", subdirectory = "sdks/python" }
+# #
+# # `editable = false` is required: the agent-control monorepo's `src/`-layout
+# # workspace members install via `_editable_impl_*.pth` files that Python's
+# # site-init silently fails to expand at startup, leaving them unimportable.
+# agent-control-sdk = { path = "/Users/binliu/Documents/rungalileo/agent-control/sdks/python", editable = false }
+# # v7.6.0 SDK imports `agent_control_telemetry` even though it's missing from sdks/python/pyproject.toml.
+# agent-control-telemetry = { path = "/Users/binliu/Documents/rungalileo/agent-control/telemetry", editable = false }
+# agent-control-engine = { path = "/Users/binliu/Documents/rungalileo/agent-control/engine", editable = false }
